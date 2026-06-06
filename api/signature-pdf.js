@@ -29,19 +29,23 @@ const PDF_PLACEMENT = {
 
 export default async function handler(req, res) {
   try {
-    if (req.method === "GET") {
-      res.status(200).send("Fenix Linn signature PDF endpoint is running. Submit a POST request with childName to generate a PDF.");
-      return;
-    }
+    let childName = "";
 
-    if (req.method !== "POST") {
+    if (req.method === "GET") {
+      childName = cleanName(req.query?.childName || req.query?.name || "");
+
+      if (!childName) {
+        res.status(200).send("Fenix Linn signature PDF endpoint is running. Add ?childName=Your%20Name to generate a PDF.");
+        return;
+      }
+    } else if (req.method === "POST") {
+      const body = await parseRequestBody(req);
+      childName = cleanName(body.childName || body.name || "");
+    } else {
       res.setHeader("Allow", "GET, POST");
       res.status(405).send("Method not allowed");
       return;
     }
-
-    const body = await parseRequestBody(req);
-    const childName = cleanName(body.childName || body.name || "");
 
     if (!childName) {
       res.status(400).json({ error: "Missing childName" });

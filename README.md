@@ -1,18 +1,7 @@
 # Fenix Linn Signature PDF Generator
 
-This is a tiny Vercel serverless endpoint that generates the customized cursive signature worksheet as a real HTTPS PDF response.
+This version supports both:
+- GET `/api/signature-pdf?childName=Your%20Name`
+- POST `/api/signature-pdf` with `childName`
 
-Endpoint after deploy:
-
-`https://YOUR-VERCEL-PROJECT.vercel.app/api/signature-pdf`
-
-It accepts a POST request with:
-
-- `childName`
-
-It returns:
-
-- `Content-Type: application/pdf`
-- `Content-Disposition: attachment`
-
-The endpoint does not save names, PDFs, or form submissions.
+GET support helps with Facebook/Instagram in-app browser handoff behavior.
