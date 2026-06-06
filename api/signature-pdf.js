@@ -35,8 +35,57 @@ export default async function handler(req, res) {
       childName = cleanName(req.query?.childName || req.query?.name || "");
 
       if (!childName) {
-        res.status(200).send("Fenix Linn signature PDF endpoint is running. Add ?childName=Your%20Name to generate a PDF.");
-        return;
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+res.status(200).send(`
+  <!doctype html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Creating Your Worksheet | Fenix Linn</title>
+      <style>
+        body {
+          margin: 0;
+          min-height: 100vh;
+          display: grid;
+          place-items: center;
+          background: #fff7ec;
+          color: #4f2a3d;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          text-align: center;
+          padding: 24px;
+        }
+
+        .card {
+          max-width: 420px;
+          background: #ffffff;
+          border-radius: 24px;
+          padding: 32px 28px;
+          box-shadow: 0 18px 50px rgba(42, 31, 20, 0.12);
+        }
+
+        h1 {
+          font-size: 28px;
+          line-height: 1.1;
+          margin: 0 0 12px;
+        }
+
+        p {
+          font-size: 16px;
+          line-height: 1.5;
+          margin: 0;
+          color: #6c5b4c;
+        }
+      </style>
+    </head>
+    <body>
+      <main class="card">
+        <h1>Creating your worksheet...</h1>
+        <p>Your custom cursive practice sheet is being prepared. If your download does not begin, return to the generator and try again.</p>
+      </main>
+    </body>
+  </html>
+`);
+return;
       }
     } else if (req.method === "POST") {
       const body = await parseRequestBody(req);
